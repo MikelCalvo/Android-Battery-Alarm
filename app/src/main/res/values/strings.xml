@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Battery Alarm</string>
+    <string name="title">Choose the alarm type you want</string>
+    <string name="battery_full">Battery Full</string>
+    <string name="battery_low">Battery Low</string>
+    <string name="notification_tone">Notification Tone</string>
+    <string name="repeat">Repeat</string>
+    <string name="repeat_interval">Repeat Interval</string>
+    <string name="battery_percentage">Battery Percentage</string>
+    <string name="activate">Activate</string>
+</resources>
