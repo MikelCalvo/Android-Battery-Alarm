@@ -8,5 +8,6 @@
     <color name="colorSecondaryLight">#C8E6C9</color>
     <color name="textColorDark">#000000</color>
     <color name="textColorLight">#ffffff</color>
+    <color name="textColorMutted">#9F9F9F</color>
     <color name="colorBackground">#0f1425</color>
 </resources>

@@ -74,69 +74,78 @@
                         android:id="@+id/repeatDurationLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/repeat_duration"
+                        android:text="@string/repeat_times"
                         android:textColor="@color/textColorLight"
                         android:textStyle="bold"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
+                    <TextView
+                        android:id="@+id/repeatDurationDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/repeat_times_desc"
+                        android:textColor="@color/textColorMutted"
+                        app:layout_constraintTop_toBottomOf="@+id/repeatDurationLabel"
+                        app:layout_constraintStart_toStartOf="parent" />
+
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/cancelRepeat"
+                        android:id="@+id/repeat_once"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/no_repeat"
+                        android:text="@string/repeat_once"
                         android:textColor="@color/textColorLight"
                         app:backgroundTint="@color/colorSecondary"
                         android:inputType="text"
                         app:cornerRadius="32dp"
-                        app:layout_constraintEnd_toStartOf="@+id/repeat10s"
+                        app:layout_constraintEnd_toStartOf="@+id/repeat_two_times"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/repeatDurationLabel" />
+                        app:layout_constraintTop_toBottomOf="@+id/repeatDurationDesc" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/repeat10s"
+                        android:id="@+id/repeat_two_times"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="@string/repeat_10s"
+                        android:text="@string/repeat_two_times"
                         android:textColor="@color/textColorLight"
                         app:backgroundTint="@color/colorSecondary"
                         android:inputType="text"
                         app:cornerRadius="32dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/cancelRepeat" />
+                        app:layout_constraintTop_toTopOf="@+id/repeat_once" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/repeat30s"
+                        android:id="@+id/repeat_three_times"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/repeat_30s"
+                        android:text="@string/repeat_three_times"
                         android:textColor="@color/textColorLight"
                         app:backgroundTint="@color/colorSecondary"
                         android:inputType="text"
                         app:cornerRadius="32dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/repeat10s"
-                        app:layout_constraintTop_toTopOf="@+id/cancelRepeat" />
+                        app:layout_constraintStart_toEndOf="@+id/repeat_two_times"
+                        app:layout_constraintTop_toTopOf="@+id/repeat_once" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/repeat1m"
+                        android:id="@+id/repeat_four_times"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/repeat_1m"
+                        android:text="@string/repeat_four_times"
                         android:textColor="@color/textColorLight"
                         app:backgroundTint="@color/colorSecondary"
                         android:inputType="text"
                         app:cornerRadius="32dp"
-                        app:layout_constraintEnd_toStartOf="@+id/repeat10s"
-                        app:layout_constraintStart_toEndOf="@+id/cancelRepeat"
-                        app:layout_constraintTop_toBottomOf="@+id/cancelRepeat" />
+                        app:layout_constraintEnd_toStartOf="@+id/repeat_two_times"
+                        app:layout_constraintStart_toEndOf="@+id/repeat_once"
+                        app:layout_constraintTop_toBottomOf="@+id/repeat_once" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/repeatInfinite"
+                        android:id="@+id/repeat_infinite_times"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/repeat_infinite"
@@ -144,9 +153,9 @@
                         android:inputType="text"
                         app:backgroundTint="@color/colorSecondary"
                         app:cornerRadius="32dp"
-                        app:layout_constraintEnd_toStartOf="@+id/repeat30s"
-                        app:layout_constraintStart_toEndOf="@+id/repeat10s"
-                        app:layout_constraintTop_toTopOf="@+id/repeat1m" />
+                        app:layout_constraintEnd_toStartOf="@+id/repeat_three_times"
+                        app:layout_constraintStart_toEndOf="@+id/repeat_two_times"
+                        app:layout_constraintTop_toTopOf="@+id/repeat_four_times" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

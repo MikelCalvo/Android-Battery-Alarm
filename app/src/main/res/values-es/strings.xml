@@ -3,19 +3,20 @@
     <string name="title">Selecciona el tipo de alarma que quieres</string>
     <string name="guide">* Haz click en cualquiera de las alarmas para editar sus ajustes</string>
     <string name="battery_full">Carga Completa</string>
-    <string name="battery_low">Porcentage de Batería</string>
+    <string name="battery_low">Batería Baja</string>
     <string name="notification_tone">Tono de Notificación</string>
     <string name="select_sound">Seleccionar sonido</string>
-    <string name="repeat_duration">Duración de Repeticiones</string>
-    <string name="battery_percentage">Porcentaje de Batería</string>
+    <string name="repeat_times">Cantidad de Repeticiones</string>
+    <string name="repeat_times_desc">La alarma se repetirá cada minuto por la cantidad de veces seleccionada</string>
+    <string name="battery_percentage">Porcentaje de Batería Menor Que</string>
     <string name="activate">Activar</string>
     <string name="save">Guardar</string>
     <string name="saved">Guardado</string>
     <string name="default_tone">Tono por Defecto</string>
 
-    <string name="no_repeat">X</string>
-    <string name="repeat_10s">10s</string>
-    <string name="repeat_30s">30s</string>
-    <string name="repeat_1m">1m</string>
+    <string name="repeat_once">1</string>
+    <string name="repeat_two_times">2</string>
+    <string name="repeat_three_times">3</string>
+    <string name="repeat_four_times">4</string>
     <string name="repeat_infinite">∞</string>
 </resources>

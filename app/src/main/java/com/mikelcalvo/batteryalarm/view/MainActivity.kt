@@ -3,12 +3,12 @@ package com.mikelcalvo.batteryalarm.view
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikelcalvo.batteryalarm.databinding.ActivityMainBinding
 import com.mikelcalvo.batteryalarm.model.AlarmType
 import com.mikelcalvo.batteryalarm.model.BatteryAlarmSettings
+import com.mikelcalvo.batteryalarm.receiver.BatteryLevelReceiver
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         registerBatteryLevelReceiver()
     }
+
 
     private fun registerBatteryLevelReceiver() {
         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)

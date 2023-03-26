@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
@@ -25,6 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".receiver.BatteryLevelReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="com.mikelcalvo.batteryalarm.ACTION_STOP_LOW_BATTERY_ALARM" />
+                <action android:name="com.mikelcalvo.batteryalarm.ACTION_STOP_FULL_BATTERY_ALARM" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.AlarmBroadcastReceiver" />
     </application>
-
 </manifest>
