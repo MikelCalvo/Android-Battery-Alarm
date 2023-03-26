@@ -19,8 +19,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         batteryAlarms = mutableListOf(
-            BatteryAlarmSettings(AlarmType.BATTERY_FULL),
-            BatteryAlarmSettings(AlarmType.BATTERY_LOW)
+            BatteryAlarmSettings(alarmType = AlarmType.BATTERY_FULL),
+            BatteryAlarmSettings(
+                alarmType = AlarmType.BATTERY_LOW,
+                batteryPercentage = 15
+            )
         )
 
         val layoutManager = LinearLayoutManager(this)

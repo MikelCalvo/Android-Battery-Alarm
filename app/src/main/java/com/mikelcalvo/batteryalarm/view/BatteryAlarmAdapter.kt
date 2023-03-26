@@ -1,13 +1,17 @@
 package com.mikelcalvo.batteryalarm.view
 
+import android.app.AlarmManager
 import android.app.Dialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +21,13 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.slider.Slider
 import com.mikelcalvo.batteryalarm.R
+import com.mikelcalvo.batteryalarm.model.AlarmRepeatInterval
 import com.mikelcalvo.batteryalarm.model.AlarmType
 import com.mikelcalvo.batteryalarm.model.BatteryAlarmSettings
 import com.mikelcalvo.batteryalarm.model.NotificationSound
+import java.util.concurrent.TimeUnit
 
 class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
     RecyclerView.Adapter<BatteryAlarmAdapter.ViewHolder>() {
@@ -55,7 +62,13 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
                 holder.tvBatteryTitle.setText(R.string.battery_low)
             }
         }
+
         holder.switchAlarm.setOnCheckedChangeListener { _, isChecked ->
+            val context = holder.view.context
+
+            val editor = context.getSharedPreferences("alarms", Context.MODE_PRIVATE).edit()
+            editor.putBoolean("enabled_${alarm.alarmType.name}", isChecked)
+            editor.apply()
 
         }
 
@@ -65,6 +78,7 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
     }
 
     private fun showSettingsDialog(context: Context, alarm: BatteryAlarmSettings) {
+        val sharedPreferences = context.getSharedPreferences("alarms", Context.MODE_PRIVATE)
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_battery_alarm_settings)
@@ -74,16 +88,14 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
         dialog.window?.setDimAmount(0.8f)
-        dialog.setCanceledOnTouchOutside(true)
+        dialog.setCanceledOnTouchOutside(false)
 
         val notificationSoundTextView = dialog.findViewById<TextView>(R.id.notificationSound)
+        val savedNotificationSound = sharedPreferences.getString("notificationSound_${alarm.alarmType.name}", context.getString(R.string.default_tone))
+        notificationSoundTextView.text = savedNotificationSound
         notificationSoundTextView.setOnClickListener {
             showNotificationSoundsDialog(context, notificationSoundTextView)
         }
-
-        val sharedPreferences = context.getSharedPreferences("alarms", Context.MODE_PRIVATE)
-        val savedNotificationSound = sharedPreferences.getString("notificationSound_${alarm.alarmType.name}", "default")
-        notificationSoundTextView.text = savedNotificationSound
 
         val cancelRepeat = dialog.findViewById<TextView>(R.id.cancelRepeat)
         val repeat10s = dialog.findViewById<TextView>(R.id.repeat10s)
@@ -107,10 +119,19 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
             setOnClickListener { selectRepeatOption(context, repeatInfinite, cancelRepeat, repeat10s, repeat30s, repeat1m) }
         }
 
-        val savedRepeat = sharedPreferences.getInt("repeat_${alarm.alarmType.name}", 0)
-        setDefaultRepeatOption(cancelRepeat, repeat10s, repeat30s, repeat1m, repeatInfinite, savedRepeat)
+        when (sharedPreferences.getInt("repeat_${alarm.alarmType.name}", AlarmRepeatInterval.NO_REPEAT.value)) {
+            AlarmRepeatInterval.NO_REPEAT.value -> selectRepeatOption(context, cancelRepeat, repeat10s, repeat30s, repeat1m, repeatInfinite)
+            AlarmRepeatInterval.TEN_SECONDS.value -> selectRepeatOption(context, repeat10s, cancelRepeat, repeat30s, repeat1m, repeatInfinite)
+            AlarmRepeatInterval.THIRTY_SECONDS.value -> selectRepeatOption(context, repeat30s, cancelRepeat, repeat10s, repeat1m, repeatInfinite)
+            AlarmRepeatInterval.ONE_MINUTE.value -> selectRepeatOption(context, repeat1m, cancelRepeat, repeat10s, repeat30s, repeatInfinite)
+            AlarmRepeatInterval.INFINITE.value -> selectRepeatOption(context, repeatInfinite, cancelRepeat, repeat10s, repeat30s, repeat1m)
+        }
 
         val lowBatterySettingsCard = dialog.findViewById<CardView>(R.id.lowBatterySettingsCard)
+
+        val lowBatteryPercentage = dialog.findViewById<Slider>(R.id.lowBatteryPercentage)
+        val savedPercentage = sharedPreferences.getInt("percentage_${alarm.alarmType.name}", 15)
+        lowBatteryPercentage.value = savedPercentage.toFloat()
 
         lowBatterySettingsCard.visibility = if (alarm.alarmType == AlarmType.BATTERY_LOW) {
             View.VISIBLE
@@ -125,9 +146,12 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
 
             editor.putString("notificationSound_${alarm.alarmType.name}", notificationSoundTextView.text.toString())
             editor.putInt("repeat_${alarm.alarmType.name}", getSelectedRepeatOption(cancelRepeat, repeat10s, repeat30s, repeat1m, repeatInfinite))
-            editor.apply()
 
-            Toast.makeText(context, context.getString(R.string.saved), Toast.LENGTH_SHORT).show()
+            if(alarm.alarmType == AlarmType.BATTERY_LOW) {
+                editor.putInt("percentage_${alarm.alarmType.name}", getSelectedBatteryPercentage(dialog.findViewById(R.id.lowBatteryPercentage)))
+            }
+
+            editor.apply()
 
             dialog.dismiss()
         }
@@ -145,7 +169,7 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
         dialog.window?.setDimAmount(0.8f)
-        dialog.setCanceledOnTouchOutside(true)
+        dialog.setCanceledOnTouchOutside(false)
 
         val notificationSoundsList: RecyclerView = dialog.findViewById(R.id.notificationSoundsList)
         notificationSoundsList.layoutManager = LinearLayoutManager(context)
@@ -232,13 +256,7 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
         }
     }
 
-    private fun setDefaultRepeatOption(cancelRepeat: TextView, repeat10s: TextView, repeat30s: TextView, repeat1m: TextView, repeatInfinite: TextView, repeatValue: Int) {
-        when (repeatValue) {
-            0 -> selectRepeatOption(cancelRepeat.context, cancelRepeat, repeat10s, repeat30s, repeat1m, repeatInfinite)
-            10 -> selectRepeatOption(repeat10s.context, repeat10s, cancelRepeat, repeat30s, repeat1m, repeatInfinite)
-            30 -> selectRepeatOption(repeat30s.context, repeat30s, cancelRepeat, repeat10s, repeat1m, repeatInfinite)
-            60 -> selectRepeatOption(repeat1m.context, repeat1m, cancelRepeat, repeat10s, repeat30s, repeatInfinite)
-            Int.MAX_VALUE -> selectRepeatOption(repeatInfinite.context, repeatInfinite, cancelRepeat, repeat10s, repeat30s, repeat1m)
-        }
+    private fun getSelectedBatteryPercentage(batteryPercentage: Slider): Int {
+        return batteryPercentage.value.toInt()
     }
 }

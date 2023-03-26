@@ -11,6 +11,7 @@
     <string name="activate">Activate</string>
     <string name="save">Save</string>
     <string name="saved">Saved</string>
+    <string name="default_tone">Default Tone</string>
 
     <string name="no_repeat">X</string>
     <string name="repeat_10s">10s</string>

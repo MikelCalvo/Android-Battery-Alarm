@@ -11,6 +11,7 @@
     <string name="activate">Activar</string>
     <string name="save">Guardar</string>
     <string name="saved">Guardado</string>
+    <string name="default_tone">Tono por Defecto</string>
 
     <string name="no_repeat">X</string>
     <string name="repeat_10s">10s</string>
