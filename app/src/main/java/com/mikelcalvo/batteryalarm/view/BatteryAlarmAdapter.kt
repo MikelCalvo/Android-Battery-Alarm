@@ -72,6 +72,10 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
 
         }
 
+        val sharedPreferences = holder.view.context.getSharedPreferences("alarms", Context.MODE_PRIVATE)
+        val isEnabled = sharedPreferences.getBoolean("enabled_${alarm.alarmType.name}", false)
+        holder.switchAlarm.isChecked = isEnabled
+
         holder.view.setOnClickListener {
             showSettingsDialog(it.context, alarm)
         }
