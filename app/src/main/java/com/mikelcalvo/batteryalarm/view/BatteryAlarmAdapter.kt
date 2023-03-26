@@ -1,8 +1,13 @@
 package com.mikelcalvo.batteryalarm.view
 
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
@@ -44,5 +49,23 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
         }
         holder.switchAlarm.setOnCheckedChangeListener { _, isChecked ->
         }
+
+        holder.view.setOnClickListener {
+            showSettingsDialog(it.context, alarm)
+        }
+    }
+
+    private fun showSettingsDialog(context: Context, alarm: BatteryAlarmSettings) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_battery_alarm_settings)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setDimAmount(0.7f)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
     }
 }

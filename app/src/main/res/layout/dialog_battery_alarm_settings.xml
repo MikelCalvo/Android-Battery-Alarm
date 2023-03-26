@@ -1,0 +1,208 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    android:layout_margin="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/notificationSettingsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/notificationSoundLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notification_tone"
+                        android:textColor="@color/textColorLight"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/notificationSound"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorLight"
+                        android:text="@string/select_sound"
+                        app:layout_constraintTop_toBottomOf="@+id/notificationSoundLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:background="?selectableItemBackground" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/repeatSettingsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/notificationSettingsCard"
+                android:layout_marginTop="16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/repeatDurationLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/repeat_duration"
+                        android:textColor="@color/textColorLight"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cancelRepeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/no_repeat"
+                        android:textColor="@color/textColorLight"
+                        app:backgroundTint="@color/colorSecondary"
+                        android:inputType="text"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toStartOf="@+id/repeat10s"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/repeatDurationLabel" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/repeat10s"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/repeat_10s"
+                        android:textColor="@color/textColorLight"
+                        app:backgroundTint="@color/colorSecondary"
+                        android:inputType="text"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/cancelRepeat" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/repeat30s"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/repeat_30s"
+                        android:textColor="@color/textColorLight"
+                        app:backgroundTint="@color/colorSecondary"
+                        android:inputType="text"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/repeat10s"
+                        app:layout_constraintTop_toTopOf="@+id/cancelRepeat" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/repeat1m"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/repeat_1m"
+                        android:textColor="@color/textColorLight"
+                        app:backgroundTint="@color/colorSecondary"
+                        android:inputType="text"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toStartOf="@+id/repeat10s"
+                        app:layout_constraintStart_toEndOf="@+id/cancelRepeat"
+                        app:layout_constraintTop_toBottomOf="@+id/cancelRepeat" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/repeatInfinite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/repeat_infinite"
+                        android:textColor="@color/textColorLight"
+                        android:inputType="text"
+                        app:backgroundTint="@color/colorSecondary"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toStartOf="@+id/repeat30s"
+                        app:layout_constraintStart_toEndOf="@+id/repeat10s"
+                        app:layout_constraintTop_toTopOf="@+id/repeat1m" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/lowBatterySettingsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/repeatSettingsCard"
+                android:layout_marginTop="16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/lowBatteryLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/battery_percentage"
+                        android:textColor="@color/textColorLight"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/lowBatteryPercentage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:value="15"
+                        android:valueFrom="0"
+                        android:valueTo="100"
+                        android:stepSize="1"
+                        app:thumbColor="@color/colorSecondary"
+                        app:trackColor="@color/colorSecondary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lowBatteryLabel"
+                        android:layout_marginTop="8dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lowBatterySettingsCard"
+                android:layout_marginTop="16dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</com.google.android.material.card.MaterialCardView>

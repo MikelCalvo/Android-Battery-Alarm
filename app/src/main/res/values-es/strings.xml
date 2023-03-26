@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">Alarma de Batería</string>
     <string name="title">Selecciona el tipo de alarma que quieres</string>
+    <string name="guide">* Haz click en cualquiera de las alarmas para editar sus ajustes</string>
     <string name="battery_full">Batería Llena</string>
     <string name="battery_low">Batería Baja</string>
     <string name="notification_tone">Tono de Notificación</string>
-    <string name="repeat">Repetir</string>
-    <string name="repeat_interval">Intervalo de Repetición</string>
+    <string name="select_sound">Seleccionar sonido</string>
+    <string name="repeat_duration">Cantidad de Repeticiones</string>
     <string name="battery_percentage">Porcentaje de Batería</string>
     <string name="activate">Activar</string>
+    <string name="save">Guardar</string>
+
+    <string name="no_repeat">X</string>
+    <string name="repeat_10s">10s</string>
+    <string name="repeat_30s">30s</string>
+    <string name="repeat_1m">1m</string>
+    <string name="repeat_infinite">∞</string>
 </resources>
