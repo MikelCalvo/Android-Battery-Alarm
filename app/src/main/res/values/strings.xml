@@ -2,7 +2,7 @@
     <string name="app_name">Battery Alarm</string>
     <string name="title">Choose the alarm type you want</string>
     <string name="guide">* Click on any of the alarms to edit the settings</string>
-    <string name="battery_full">Battery Full</string>
+    <string name="battery_full">Full Charge</string>
     <string name="battery_low">Battery Low</string>
     <string name="notification_tone">Notification Tone</string>
     <string name="select_sound">Select sound</string>

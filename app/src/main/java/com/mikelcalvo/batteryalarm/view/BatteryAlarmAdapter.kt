@@ -8,7 +8,6 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,8 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mikelcalvo.batteryalarm.R
@@ -81,6 +82,41 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
             showNotificationSoundsDialog(context, notificationSoundTextView)
         }
 
+        val cancelRepeat = dialog.findViewById<TextView>(R.id.cancelRepeat)
+        val repeat10s = dialog.findViewById<TextView>(R.id.repeat10s)
+        val repeat30s = dialog.findViewById<TextView>(R.id.repeat30s)
+        val repeat1m = dialog.findViewById<TextView>(R.id.repeat1m)
+        val repeatInfinite = dialog.findViewById<TextView>(R.id.repeatInfinite)
+
+        with(cancelRepeat) {
+            backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorSecondary)
+            setOnClickListener { selectRepeatOption(context, cancelRepeat, repeat30s, repeat1m, repeatInfinite) }
+        }
+        with(repeat10s) {
+            backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorBackground)
+            setOnClickListener { selectRepeatOption(context, repeat10s, cancelRepeat, repeat30s, repeat1m) }
+        }
+        with(repeat30s) {
+            backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorBackground)
+            setOnClickListener { selectRepeatOption(context, repeat30s, cancelRepeat, repeat1m, repeatInfinite) }
+        }
+        with(repeat1m) {
+            backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorBackground)
+            setOnClickListener { selectRepeatOption(context, repeat1m, cancelRepeat, repeat30s, repeatInfinite) }
+        }
+        with(repeatInfinite) {
+            backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorBackground)
+            setOnClickListener { selectRepeatOption(context, repeatInfinite, cancelRepeat, repeat30s, repeat1m) }
+        }
+
+        val lowBatterySettingsCard = dialog.findViewById<CardView>(R.id.lowBatterySettingsCard)
+
+        lowBatterySettingsCard.visibility = if (alarm.alarmType == AlarmType.BATTERY_LOW) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
         dialog.show()
     }
 
@@ -110,6 +146,18 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
         notificationSoundsList.adapter = notificationSoundAdapter
 
         dialog.show()
+    }
+
+    private fun selectRepeatOption(
+        context: Context,
+        selectedOption: TextView,
+        vararg otherOptions: TextView
+    ) {
+        selectedOption.backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorSecondary)
+
+        for (option in otherOptions) {
+            option.backgroundTintList = ContextCompat.getColorStateList(context, R.color.colorBackground)
+        }
     }
 
     private fun getNotificationSounds(context: Context): List<NotificationSound> {
