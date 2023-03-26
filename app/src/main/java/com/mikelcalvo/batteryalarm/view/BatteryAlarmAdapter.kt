@@ -4,6 +4,11 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +16,17 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mikelcalvo.batteryalarm.R
 import com.mikelcalvo.batteryalarm.model.AlarmType
 import com.mikelcalvo.batteryalarm.model.BatteryAlarmSettings
+import com.mikelcalvo.batteryalarm.model.NotificationSound
 
 class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
     RecyclerView.Adapter<BatteryAlarmAdapter.ViewHolder>() {
+
+    private var mediaPlayer: MediaPlayer? = null
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val ivBatteryIcon: ImageView = view.findViewById(R.id.ivBatteryIcon)
@@ -64,8 +73,82 @@ class BatteryAlarmAdapter(private val alarms: List<BatteryAlarmSettings>) :
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialog.window?.setDimAmount(0.7f)
+        dialog.window?.setDimAmount(0.8f)
         dialog.setCanceledOnTouchOutside(true)
+
+        val notificationSoundTextView = dialog.findViewById<TextView>(R.id.notificationSound)
+        notificationSoundTextView.setOnClickListener {
+            showNotificationSoundsDialog(context, notificationSoundTextView)
+        }
+
         dialog.show()
+    }
+
+    private fun showNotificationSoundsDialog(context: Context, notificationSoundTextView: TextView) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_notification_sounds)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setDimAmount(0.8f)
+        dialog.setCanceledOnTouchOutside(true)
+
+        val notificationSoundsList: RecyclerView = dialog.findViewById(R.id.notificationSoundsList)
+        notificationSoundsList.layoutManager = LinearLayoutManager(context)
+
+        val notificationSounds = getNotificationSounds(context)
+
+        val notificationSoundAdapter = NotificationSoundAdapter(context, notificationSounds, { uri ->
+            playNotificationSound(context, uri)
+        }) { selectedNotificationSound ->
+            notificationSoundTextView.text = selectedNotificationSound.title
+            dialog.dismiss()
+        }
+        notificationSoundsList.adapter = notificationSoundAdapter
+
+        dialog.show()
+    }
+
+    private fun getNotificationSounds(context: Context): List<NotificationSound> {
+        val ringtoneManager = RingtoneManager(context).apply {
+            setType(RingtoneManager.TYPE_NOTIFICATION)
+        }
+        val cursor = ringtoneManager.cursor
+        val notificationSounds = mutableListOf<NotificationSound>()
+
+        while (cursor.moveToNext()) {
+            val title = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX)
+            val uriString = cursor.getString(RingtoneManager.URI_COLUMN_INDEX) + "/" + cursor.getString(RingtoneManager.ID_COLUMN_INDEX)
+            val uri = Uri.parse(uriString)
+            notificationSounds.add(NotificationSound(title, uri))
+        }
+
+        return notificationSounds
+    }
+
+    private fun playNotificationSound(context: Context, uri: Uri) {
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(context, uri)
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+            )
+            setOnPreparedListener {
+                it.start()
+            }
+            setOnCompletionListener {
+                it.release()
+                mediaPlayer = null
+            }
+            prepareAsync()
+        }
     }
 }
