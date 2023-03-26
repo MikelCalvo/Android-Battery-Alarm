@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikelcalvo.batteryalarm.databinding.ActivityMainBinding
 import com.mikelcalvo.batteryalarm.model.AlarmType
 import com.mikelcalvo.batteryalarm.model.BatteryAlarmSettings
-import com.mikelcalvo.batteryalarm.view.BatteryAlarmAdapter
 
 class MainActivity : AppCompatActivity() {
 
